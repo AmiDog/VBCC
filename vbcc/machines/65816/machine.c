@@ -30,16 +30,16 @@ char cg_copyright[]="vbcc generic code-generator V0.1b (c) in 2001 by Volker Bar
     FUNCFLAG: a function will be called
     apart from FUNCFLAG, all other versions can only be specified once */
 int g_flags[MAXGF]={0,0,
-		    VALFLAG,VALFLAG,VALFLAG,
-		    0,0,
-		    VALFLAG,VALFLAG,0};
+                    VALFLAG,VALFLAG,VALFLAG,
+                    0,0,
+                    VALFLAG,VALFLAG,0};
 
 /* the flag-name, do not use names beginning with l, L, I, D or U, because
    they collide with the frontend */
 char *g_flags_name[MAXGF]={"three-addr","load-store",
-			   "volatile-gprs","volatile-fprs","volatile-ccrs",
-			   "imm-ind","gpr-ind",
-			   "gpr-args","fpr-args","use-commons"};
+                           "volatile-gprs","volatile-fprs","volatile-ccrs",
+                           "imm-ind","gpr-ind",
+                           "gpr-args","fpr-args","use-commons"};
 
 /* the results of parsing the command-line-flags will be stored here */
 union ppi g_flags_val[MAXGF];
@@ -117,8 +117,8 @@ static struct Typ ltyp={LONG},ldbl={DOUBLE},lchar={CHAR};
 
 /* macros defined by the backend */
 static char *marray[]={"__section(x)=__vattr(\"section(\"#x\")\")",
-		       "__GENERIC__",
-		       0};
+                       "__GENERIC__",
+                       0};
 
 /* special registers */
 static int sp;                     /*  Stackpointer                        */
@@ -249,7 +249,7 @@ static void load_address(FILE *f,int r,struct obj *o,int type)
     }else{
       emit(f,"\tmov.%s\t%s,%s\n",dt(POINTER),regnames[r],regnames[sp]);
       if(off)
-	emit(f,"\tadd.%s\t%s,%ld\n",dt(POINTER),regnames[r],off);
+        emit(f,"\tadd.%s\t%s,%ld\n",dt(POINTER),regnames[r],off);
     }
   }else{
     emit(f,"\tmov.%s\t%s,",dt(POINTER),regnames[r]);
@@ -444,52 +444,52 @@ static void peephole(struct IC *p)
       eval_const(&p->q2.val,p->typf);
       if(c==SUBIFP) of=zmsub(l2zm(0L),vmax); else of=vmax;
       if(1/*zmleq(l2zm(-32768L),vmax)&&zmleq(vmax,l2zm(32767L))*/){
-	r=p->z.reg;
-	if(isreg(q1)) base=p->q1.reg; else base=r;
-	o=0;
-	for(p2=p->next;p2;p2=p2->next){
-	  c2=p2->code;
-	  if(c2==CALL||c2==LABEL||(c2>=BEQ&&c2<=BRA)) break;
-	  if(c2!=FREEREG&&(p2->q1.flags&(REG|DREFOBJ))==REG&&p2->q1.reg==r) break;
-	  if(c2!=FREEREG&&(p2->q2.flags&(REG|DREFOBJ))==REG&&p2->q2.reg==r) break;
-	  if(c2!=CALL&&(c2<LABEL||c2>BRA)/*&&c2!=ADDRESS*/){
-	    if(!p2->q1.am&&(p2->q1.flags&(REG|DREFOBJ))==(REG|DREFOBJ)&&p2->q1.reg==r){
-	      if(o) break;
-	      o=&p2->q1;
-	    }
-	    if(!p2->q2.am&&(p2->q2.flags&(REG|DREFOBJ))==(REG|DREFOBJ)&&p2->q2.reg==r){
-	      if(o) break;
-	      o=&p2->q2;
-	    }
-	    if(!p2->z.am&&(p2->z.flags&(REG|DREFOBJ))==(REG|DREFOBJ)&&p2->z.reg==r){
-	      if(o) break;
-	      o=&p2->z;
-	    }
-	  }
-	  if(c2==FREEREG||(p2->z.flags&(REG|DREFOBJ))==REG){
-	    int m;
-	    if(c2==FREEREG)
-	      m=p2->q1.reg;
-	    else
-	      m=p2->z.reg;
-	    if(m==r){
-	      if(o){
-		o->am=am=mymalloc(sizeof(*am));
-		am->flags=IMM_IND;
-		am->base=base;
-		am->offset=zm2l(of);
-		if(isreg(q1)){
-		  p->code=c=NOP;p->q1.flags=p->q2.flags=p->z.flags=0;
-		}else{
-		  p->code=c=ASSIGN;p->q2.flags=0;
-		  p->typf=p->typf2;p->q2.val.vmax=sizetab[p->typf2&NQ];
-		}
-	      }
-	      break;
-	    }
-	    if(c2!=FREEREG&&m==base) break;
-	    continue;
-	  }
+        r=p->z.reg;
+        if(isreg(q1)) base=p->q1.reg; else base=r;
+        o=0;
+        for(p2=p->next;p2;p2=p2->next){
+          c2=p2->code;
+          if(c2==CALL||c2==LABEL||(c2>=BEQ&&c2<=BRA)) break;
+          if(c2!=FREEREG&&(p2->q1.flags&(REG|DREFOBJ))==REG&&p2->q1.reg==r) break;
+          if(c2!=FREEREG&&(p2->q2.flags&(REG|DREFOBJ))==REG&&p2->q2.reg==r) break;
+          if(c2!=CALL&&(c2<LABEL||c2>BRA)/*&&c2!=ADDRESS*/){
+            if(!p2->q1.am&&(p2->q1.flags&(REG|DREFOBJ))==(REG|DREFOBJ)&&p2->q1.reg==r){
+              if(o) break;
+              o=&p2->q1;
+            }
+            if(!p2->q2.am&&(p2->q2.flags&(REG|DREFOBJ))==(REG|DREFOBJ)&&p2->q2.reg==r){
+              if(o) break;
+              o=&p2->q2;
+            }
+            if(!p2->z.am&&(p2->z.flags&(REG|DREFOBJ))==(REG|DREFOBJ)&&p2->z.reg==r){
+              if(o) break;
+              o=&p2->z;
+            }
+          }
+          if(c2==FREEREG||(p2->z.flags&(REG|DREFOBJ))==REG){
+            int m;
+            if(c2==FREEREG)
+              m=p2->q1.reg;
+            else
+              m=p2->z.reg;
+            if(m==r){
+              if(o){
+                o->am=am=mymalloc(sizeof(*am));
+                am->flags=IMM_IND;
+                am->base=base;
+                am->offset=zm2l(of);
+                if(isreg(q1)){
+                  p->code=c=NOP;p->q1.flags=p->q2.flags=p->z.flags=0;
+                }else{
+                  p->code=c=ASSIGN;p->q2.flags=0;
+                  p->typf=p->typf2;p->q2.val.vmax=sizetab[p->typf2&NQ];
+                }
+              }
+              break;
+            }
+            if(c2!=FREEREG&&m==base) break;
+            continue;
+          }
         }
       }
     }
@@ -505,7 +505,7 @@ static void peephole(struct IC *p)
         if(c2!=FREEREG&&(p2->q1.flags&(REG|DREFOBJ))==REG&&p2->q1.reg==r) break;
         if(c2!=FREEREG&&(p2->q2.flags&(REG|DREFOBJ))==REG&&p2->q2.reg==r) break;
         if((p2->z.flags&(REG|DREFOBJ))==REG&&p2->z.reg==idx&&idx!=r) break;
-	
+        
         if(c2!=CALL&&(c2<LABEL||c2>BRA)/*&&c2!=ADDRESS*/){
           if(!p2->q1.am&&(p2->q1.flags&(REG|DREFOBJ))==(REG|DREFOBJ)&&p2->q1.reg==r){
             if(o||(q1typ(p2)&NQ)==LLONG) break;
@@ -532,12 +532,12 @@ static void peephole(struct IC *p)
               am->flags=GPR_IND;
               am->base=base;
               am->offset=idx;
-	      if(isreg(q1)){
-		p->code=c=NOP;p->q1.flags=p->q2.flags=p->z.flags=0;
-	      }else{
-		p->code=c=ASSIGN;p->q2.flags=0;
-		p->typf=p->typf2;p->q2.val.vmax=sizetab[p->typf2&NQ];
-	      }
+              if(isreg(q1)){
+                p->code=c=NOP;p->q1.flags=p->q2.flags=p->z.flags=0;
+              }else{
+                p->code=c=ASSIGN;p->q2.flags=0;
+                p->typf=p->typf2;p->q2.val.vmax=sizetab[p->typf2&NQ];
+              }
             }
             break;
           }
@@ -810,12 +810,12 @@ void gen_var_head(FILE *f,struct Var *v)
     emit(f,"\t.globl\t%s%s\n",idprefix,v->identifier);
     if(v->flags&(DEFINED|TENTATIVE)){
       if(!special_section(f,v)){
-	if(v->clist&&(!constflag||(g_flags[2]&USEDFLAG))&&section!=DATA){emit(f,dataname);if(f) section=DATA;}
-	if(v->clist&&constflag&&!(g_flags[2]&USEDFLAG)&&section!=RODATA){emit(f,rodataname);if(f) section=RODATA;}
-	if(!v->clist&&section!=BSS){emit(f,bssname);if(f) section=BSS;}
+        if(v->clist&&(!constflag||(g_flags[2]&USEDFLAG))&&section!=DATA){emit(f,dataname);if(f) section=DATA;}
+        if(v->clist&&constflag&&!(g_flags[2]&USEDFLAG)&&section!=RODATA){emit(f,rodataname);if(f) section=RODATA;}
+        if(!v->clist&&section!=BSS){emit(f,bssname);if(f) section=BSS;}
       }
       if(v->clist||section==SPECIAL){
-	gen_align(f,falign(v->vtyp));
+        gen_align(f,falign(v->vtyp));
         emit(f,"%s%s:\n",idprefix,v->identifier);
       }else
         emit(f,"\t.global\t%s%s\n\t.%scomm\t%s%s,",idprefix,v->identifier,(USE_COMMONS?"":"l"),idprefix,v->identifier);
@@ -836,7 +836,7 @@ void gen_dc(FILE *f,int t,struct const_list *p)
       ip=(unsigned char *)&p->val.vdouble;
       emit(f,"0x%02x%02x%02x%02x",ip[0],ip[1],ip[2],ip[3]);
       if((t&NQ)!=FLOAT){
-	emit(f,",0x%02x%02x%02x%02x",ip[4],ip[5],ip[6],ip[7]);
+        emit(f,",0x%02x%02x%02x%02x",ip[4],ip[5],ip[6],ip[7]);
       }
     }else{
       emitval(f,&p->val,t&NU);
@@ -887,14 +887,14 @@ void gen_code(FILE *f,struct IC *p,struct Var *v,zmax offset)
           if(c==DIV) m->code=RSHIFT; else m->code=LSHIFT;
         }
         c=m->code;
-	gval.vmax=vmax;
-	eval_const(&gval,MAXINT);
-	if(c==AND){
-	  insert_const(&m->q2.val,t);
-	}else{
-	  insert_const(&m->q2.val,INT);
-	  p->typf2=INT;
-	}
+        gval.vmax=vmax;
+        eval_const(&gval,MAXINT);
+        if(c==AND){
+          insert_const(&m->q2.val,t);
+        }else{
+          insert_const(&m->q2.val,INT);
+          p->typf2=INT;
+        }
       }
     }
 #if FIXED_SP
@@ -928,16 +928,16 @@ void gen_code(FILE *f,struct IC *p,struct Var *v,zmax offset)
     if(c==LABEL) {emit(f,"%s%d:\n",labprefix,t);continue;}
     if(c==BRA){
       if(0/*t==exit_label&&framesize==0*/)
-	emit(f,ret);
+        emit(f,ret);
       else
-	emit(f,"\tb\t%s%d\n",labprefix,t);
+        emit(f,"\tb\t%s%d\n",labprefix,t);
       continue;
     }
     if(c>=BEQ&&c<BRA){
       emit(f,"\tb%s\t",ccs[c-BEQ]);
       if(isreg(q1)){
-	emit_obj(f,&p->q1,0);
-	emit(f,",");
+        emit_obj(f,&p->q1,0);
+        emit(f,",");
       }
       emit(f,"%s%d\n",labprefix,t);
       continue;
@@ -961,10 +961,10 @@ void gen_code(FILE *f,struct IC *p,struct Var *v,zmax offset)
     if(c==CONVERT){
       if(ISFLOAT(q1typ(p))||ISFLOAT(ztyp(p))) ierror(0);
       if(sizetab[q1typ(p)&NQ]<sizetab[ztyp(p)&NQ]){
-	if(q1typ(p)&UNSIGNED)
-	  emit(f,"\tzext.%s\t%s\n",dt(q1typ(p)),regnames[zreg]);
-	else
-	  emit(f,"\tsext.%s\t%s\n",dt(q1typ(p)),regnames[zreg]);
+        if(q1typ(p)&UNSIGNED)
+          emit(f,"\tzext.%s\t%s\n",dt(q1typ(p)),regnames[zreg]);
+        else
+          emit(f,"\tsext.%s\t%s\n",dt(q1typ(p)),regnames[zreg]);
       }
       save_result(f,p);
       continue;
@@ -983,7 +983,7 @@ void gen_code(FILE *f,struct IC *p,struct Var *v,zmax offset)
     if(c==GETRETURN){
       if(p->q1.reg){
         zreg=p->q1.reg;
-	save_result(f,p);
+        save_result(f,p);
       }else
         p->z.flags=0;
       continue;
@@ -993,29 +993,29 @@ void gen_code(FILE *f,struct IC *p,struct Var *v,zmax offset)
       /*FIXME*/
 #if 0      
       if(stack_valid&&(p->q1.flags&(VAR|DREFOBJ))==VAR&&p->q1.v->fi&&(p->q1.v->fi->flags&ALL_STACK)){
-	if(framesize+zum2ul(p->q1.v->fi->stack1)>stack)
-	  stack=framesize+zum2ul(p->q1.v->fi->stack1);
+        if(framesize+zum2ul(p->q1.v->fi->stack1)>stack)
+          stack=framesize+zum2ul(p->q1.v->fi->stack1);
       }else
-	stack_valid=0;
+        stack_valid=0;
 #endif
       if((p->q1.flags&(VAR|DREFOBJ))==VAR&&p->q1.v->fi&&p->q1.v->fi->inline_asm){
         emit_inline_asm(f,p->q1.v->fi->inline_asm);
       }else{
-	emit(f,"\tcall\t");
-	emit_obj(f,&p->q1,t);
-	emit(f,"\n");
+        emit(f,"\tcall\t");
+        emit_obj(f,&p->q1,t);
+        emit(f,"\n");
       }
       /*FIXME*/
 #if FIXED_SP
       pushed-=zm2l(p->q2.val.vmax);
 #endif
       if((p->q1.flags&(VAR|DREFOBJ))==VAR&&p->q1.v->fi&&(p->q1.v->fi->flags&ALL_REGS)){
-	bvunite(regs_modified,p->q1.v->fi->regs_modified,RSIZE);
+        bvunite(regs_modified,p->q1.v->fi->regs_modified,RSIZE);
       }else{
-	int i;
-	for(i=1;i<=MAXR;i++){
-	  if(regscratch[i]) BSET(regs_modified,i);
-	}
+        int i;
+        for(i=1;i<=MAXR;i++){
+          if(regscratch[i]) BSET(regs_modified,i);
+        }
       }
       continue;
     }
@@ -1023,21 +1023,21 @@ void gen_code(FILE *f,struct IC *p,struct Var *v,zmax offset)
       if(t==0) ierror(0);
       if(c==PUSH){
 #if FIXED_SP
-	emit(f,"\tmov.%s\t%ld(%s),",dt(t),pushed,regnames[sp]);
-	emit_obj(f,&p->q1,t);
-	emit(f,"\n");
-	pushed+=zm2l(p->q2.val.vmax);
+        emit(f,"\tmov.%s\t%ld(%s),",dt(t),pushed,regnames[sp]);
+        emit_obj(f,&p->q1,t);
+        emit(f,"\n");
+        pushed+=zm2l(p->q2.val.vmax);
 #else
-	emit(f,"\tpush.%s\t",dt(t));
-	emit_obj(f,&p->q1,t);
-	emit(f,"\n");
-	push(zm2l(p->q2.val.vmax));
+        emit(f,"\tpush.%s\t",dt(t));
+        emit_obj(f,&p->q1,t);
+        emit(f,"\n");
+        push(zm2l(p->q2.val.vmax));
 #endif
-	continue;
+        continue;
       }
       if(c==ASSIGN){
-	load_reg(f,zreg,&p->q1,t);
-	save_result(f,p);
+        load_reg(f,zreg,&p->q1,t);
+        save_result(f,p);
       }
       continue;
     }
@@ -1055,35 +1055,35 @@ void gen_code(FILE *f,struct IC *p,struct Var *v,zmax offset)
     if(c==TEST){
       emit(f,"\ttst.%s\t",dt(t));
       if(multiple_ccs)
-	emit(f,"%s,",regnames[zreg]);
+        emit(f,"%s,",regnames[zreg]);
       emit_obj(f,&p->q1,t);
       emit(f,"\n");
       if(multiple_ccs)
-	save_result(f,p);
+        save_result(f,p);
       continue;
     }
     if(c==COMPARE){
       emit(f,"\tcmp.%s\t",dt(t));
       if(multiple_ccs)
-	emit(f,"%s,",regnames[zreg]);
+        emit(f,"%s,",regnames[zreg]);
       emit_obj(f,&p->q1,t);
       emit(f,",");
       emit_obj(f,&p->q2,t);
       emit(f,"\n");
       if(multiple_ccs)
-	save_result(f,p);
+        save_result(f,p);
       continue;
     }
     if((c>=OR&&c<=AND)||(c>=LSHIFT&&c<=MOD)){
       if(!THREE_ADDR)
-	load_reg(f,zreg,&p->q1,t);
+        load_reg(f,zreg,&p->q1,t);
       if(c>=OR&&c<=AND)
-	emit(f,"\t%s.%s\t%s,",logicals[c-OR],dt(t),regnames[zreg]);
+        emit(f,"\t%s.%s\t%s,",logicals[c-OR],dt(t),regnames[zreg]);
       else
-	emit(f,"\t%s.%s\t%s,",arithmetics[c-LSHIFT],dt(t),regnames[zreg]);
+        emit(f,"\t%s.%s\t%s,",arithmetics[c-LSHIFT],dt(t),regnames[zreg]);
       if(THREE_ADDR){
-	emit_obj(f,&p->q1,t);
-	emit(f,",");
+        emit_obj(f,&p->q1,t);
+        emit(f,",");
       }
       emit_obj(f,&p->q2,t);
       emit(f,"\n");
