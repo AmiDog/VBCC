@@ -7,3 +7,5 @@ Build:
 
 make -C vbcc TARGET=i386
 make -C vbcc TARGET=generic
+make -C vbcc TARGET=mips
+make -C vbcc TARGET=65816
