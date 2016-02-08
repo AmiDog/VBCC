@@ -962,9 +962,11 @@ void gen_code(FILE *f,struct IC *p,struct Var *v,zmax offset)
       if(ISFLOAT(q1typ(p))||ISFLOAT(ztyp(p))) ierror(0);
       if(sizetab[q1typ(p)&NQ]<sizetab[ztyp(p)&NQ]){
         if(q1typ(p)&UNSIGNED)
-          emit(f,"\tzext.%s\t%s\n",dt(q1typ(p)),regnames[zreg]);
+          emit(f,"\tzext.%s\t%s,",dt(q1typ(p)),regnames[zreg]);
         else
-          emit(f,"\tsext.%s\t%s\n",dt(q1typ(p)),regnames[zreg]);
+          emit(f,"\tsext.%s\t%s,",dt(q1typ(p)),regnames[zreg]);
+        emit_obj(f,&p->q1,t);
+        emit(f,"\n");
       }
       save_result(f,p);
       continue;
