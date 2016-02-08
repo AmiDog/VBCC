@@ -1,0 +1,9 @@
+
+Create folder:
+
+mkdir -p vbcc/bin
+
+Build:
+
+make -C vbcc TARGET=i386
+make -C vbcc TARGET=generic
